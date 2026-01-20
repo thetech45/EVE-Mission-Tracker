@@ -4,17 +4,38 @@ import webbrowser
 import requests
 import base64
 import secrets
+import json
+import os
+import traceback
 from urllib.parse import urlencode
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 # ======================
-# CONFIG – EDIT THESE
+# LOAD CONFIG.JSON
 # ======================
-CLIENT_ID = "2458c3ef3a084c69b521236a6ac55bf4"
-CLIENT_SECRET = "eat_1ZJBUSHhBntxoK1kteZ48uTx1M1lUXrOE_1mcBM8"
-CALLBACK_URL = "http://localhost:8080/callback"
-SCOPES = "esi-wallet.read_character_wallet.v1"
+CONFIG_FILE = "config.json"
 
+if not os.path.exists(CONFIG_FILE):
+    raise RuntimeError(
+        "config.json not found. Please create it before running the program."
+    )
+
+with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+    config = json.load(f)
+
+REQUIRED_KEYS = ["client_id", "client_secret", "callback_url", "scopes"]
+for key in REQUIRED_KEYS:
+    if not config.get(key):
+        raise RuntimeError(f"Missing '{key}' in config.json")
+
+CLIENT_ID = config["client_id"]
+CLIENT_SECRET = config["client_secret"]
+CALLBACK_URL = config["callback_url"]
+SCOPES = config["scopes"]
+
+# ======================
+# CONSTANTS
+# ======================
 ESI = "https://esi.evetech.net/latest"
 AUTH_URL = "https://login.eveonline.com/v2/oauth/authorize"
 TOKEN_URL = "https://login.eveonline.com/v2/oauth/token"
@@ -52,6 +73,7 @@ class CallbackHandler(BaseHTTPRequestHandler):
 # ======================
 def authenticate():
     global auth_code, oauth_state
+
     auth_code = None
     oauth_state = secrets.token_urlsafe(16)
 
@@ -69,21 +91,17 @@ def authenticate():
     server.handle_request()
 
     auth_string = f"{CLIENT_ID}:{CLIENT_SECRET}"
-    auth_bytes = auth_string.encode("utf-8")
-    auth_b64 = base64.b64encode(auth_bytes).decode("utf-8")
+    auth_b64 = base64.b64encode(auth_string.encode()).decode()
 
-    headers = {
-        "Authorization": f"Basic {auth_b64}"
-    }
-
+    headers = {"Authorization": f"Basic {auth_b64}"}
     data = {
         "grant_type": "authorization_code",
         "code": auth_code
     }
 
-    response = requests.post(TOKEN_URL, headers=headers, data=data)
-    response.raise_for_status()
-    return response.json()["access_token"]
+    r = requests.post(TOKEN_URL, headers=headers, data=data)
+    r.raise_for_status()
+    return r.json()["access_token"]
 
 # ======================
 # ESI HELPERS
@@ -135,7 +153,7 @@ class MissionTrackerApp:
     def __init__(self, root):
         self.root = root
         self.root.title("EVE Mission Tracker")
-        self.root.geometry("420x280")
+        self.root.geometry("420x300")
 
         self.token = None
         self.char_id = None
@@ -166,10 +184,7 @@ class MissionTrackerApp:
             self.token = authenticate()
             self.char_id = get_character_id(self.token)
             self.refresh()
-            messagebox.showinfo(
-                "Success",
-                "Authentication successful"
-            )
+            messagebox.showinfo("Success", "Authentication successful")
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
@@ -191,9 +206,14 @@ class MissionTrackerApp:
         )
 
 # ======================
-# START APP
+# SAFE STARTUP
 # ======================
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = MissionTrackerApp(root)
-    root.mainloop()
+    try:
+        root = tk.Tk()
+        app = MissionTrackerApp(root)
+        root.mainloop()
+    except Exception:
+        traceback.print_exc()
+        input("Press Enter to exit...")
+
