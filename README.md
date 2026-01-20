@@ -67,8 +67,28 @@ Wait until it finishes.
 
 You only need to do this once.
 
+🔹 STEP 4: Set Up the Program File
+
+Put Mission.py into a folder
+Example:
+
+C:\EVE_Mission\
 
 
+Open Mission.py in Notepad or VS Code
+
+Replace these lines with your own EVE developer app info:
+
+CLIENT_ID = "YOUR_CLIENT_ID"
+CLIENT_SECRET = "YOUR_CLIENT_SECRET"
+
+
+⚠️ Every user must create their own app at
+https://developers.eveonline.com
+
+Callback URL must be:
+
+http://localhost:8080/callback
 
 🔹 STEP 5: Run the Program (IMPORTANT)
 
@@ -122,6 +142,16 @@ pip is missing
 requests is not installed
 
 or CLIENT_ID / SECRET were not set
+
+👉 Always run from Command Prompt, not by double-clicking.
+
+✅ Quick Troubleshooting Checklist
+
+✔ Python installed
+✔ “Add Python to PATH” checked
+✔ pip install requests ran successfully
+✔ CLIENT_ID and CLIENT_SECRET filled in
+✔ Program run using python Mission.py
 
 👉 Always run from Command Prompt, not by double-clicking.
 
