@@ -1,3 +1,12 @@
+DON'T MESS WITH THE CONFIG FILE. IF YOU DO IT WILL BREAK THE MAIN PROGRAM.
+
+
+
+
+
+
+
+
 Requirements:
   Latest version of Python https://www.python.org/downloads/
   pip also needs to be installed https://www.youtube.com/watch?v=CWbT-E7f73w
