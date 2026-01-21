@@ -1,6 +1,5 @@
 {
   "client_id": "2458c3ef3a084c69b521236a6ac55bf4",
-  "client_secret": "eat_1ZJBUSHhBntxoK1kteZ48uTx1M1lUXrOE_1mcBM8",
   "callback_url": "http://localhost:8080/callback",
   "scopes": "esi-wallet.read_character_wallet.v1"
 }
