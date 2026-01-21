@@ -83,12 +83,13 @@ Set:
 
 Name: Mission Tracker
 
-Connection Type: Authentication & API Access
-
 Callback URL:
 
 http://localhost:8080/
 
+Scopes:
+
+esi-wallet.read_character_wallet.v1
 
 Save the app
 
