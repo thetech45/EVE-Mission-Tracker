@@ -13,156 +13,146 @@ Requirements:
 
 
 
+📘 EVE Online Mission Tracker – User Guide
+🛰️ What This Program Does
 
-📘 How to Install pip & Run the EVE Mission Tracker
-🖥️ What You Need
+The EVE Mission Tracker is a desktop application that connects to EVE Online using CCP’s ESI system and helps you track:
+
+💰 Wallet balance (ISK)
+
+📜 Mission-related wallet activity
+
+🔢 How many missions you’ve completed
+
+📊 ISK per hour
+
+📊 LP per hour
+
+🔐 Secure login that only needs to be done once
+
+After the first login, the program remembers you and does not require re-authentication.
+
+🧰 Requirements
+✅ What you need installed
 
 Windows 10 or 11
 
-Internet connection
-
 Python 3.10 or newer
 
-🔹 STEP 1: Install Python (pip comes with it)
+An EVE Online account
 
-Go to https://www.python.org/downloads/
+An ESI Application from CCP
 
-Click Download Python (big yellow button)
+🐍 Step 1: Install Python
 
-Run the installer
+Go to: https://www.python.org/downloads/
 
-⚠️ IMPORTANT (DO NOT SKIP THIS)
+Download the latest Python 3
 
-On the first installer screen:
-✅ Check the box that says
-“Add Python to PATH”
+IMPORTANT:
+✔ Check “Add Python to PATH” during installation
 
-Then click:
-➡ Install Now
+Finish installation
 
-🔹 STEP 2: Verify Python & pip Installed Correctly
+Verify Python is installed
 
-Press Windows Key
-
-Type cmd
-
-Press Enter
-
-In the black window, type:
+Open Command Prompt and run:
 
 python --version
 
 
 You should see something like:
 
-Python 3.12.1
+Python 3.12.x
+
+📦 Step 2: Install Required Python Packages
+
+Open Command Prompt in the folder where Mission.py is located and run:
+
+pip install requests matplotlib
+
+🔑 Step 3: Create an EVE ESI Application
+
+Go to: https://developers.eveonline.com/
+
+Log in with your EVE account
+
+Click Create New Application
+
+Set:
+
+Name: Mission Tracker
+
+Connection Type: Authentication & API Access
+
+Callback URL:
+
+http://localhost:8080/
 
 
-Now check pip:
+Save the app
 
-pip --version
+Copy your Client ID
 
+⚙️ Step 4: Create config.json
 
-If you see a version number → pip is installed correctly ✅
+In the same folder as Mission.py, create a file named:
 
-🔹 STEP 3: Install Required Library (requests)
-
-In the same Command Prompt, type:
-
-pip install requests
+config.json
 
 
-Wait until it finishes.
+Paste this inside (replace YOUR_CLIENT_ID):
 
-You only need to do this once.
-
-🔹 STEP 4: Set Up the Program File
-
-Put Mission.py into a folder
-Example:
-
-C:\EVE_Mission\
+{
+  "client_id": "YOUR_CLIENT_ID",
+  "callback_url": "http://localhost:8080/",
+  "scopes": "esi-wallet.read_character_wallet.v1"
+}
 
 
-Open Mission.py in Notepad or VS Code
+📌 Important
 
-Replace these lines with your own EVE developer app info:
+No client secret is required
 
-CLIENT_ID = "YOUR_CLIENT_ID"
-CLIENT_SECRET = "YOUR_CLIENT_SECRET"
+This uses PKCE, which is safe for desktop apps
 
+▶️ Step 5: Run the Program
 
-⚠️ Every user must create their own app at
-https://developers.eveonline.com
-
-Callback URL must be:
-
-http://localhost:8080/callback
-
-🔹 STEP 5: Run the Program (IMPORTANT)
-
-❌ Do NOT double-click the file
-
-✅ Correct way:
-
-Open the folder containing Mission.py
-
-Hold Shift
-
-Right-click inside the folder
-
-Click “Open PowerShell window here” or “Open Terminal here”
-
-Then type:
+In Command Prompt, run:
 
 python Mission.py
 
 
-Press Enter
+The GUI window will open.
 
-🔹 STEP 6: Log In to EVE Online
+🔐 Step 6: First Login (One-Time)
 
-The app window opens
+Click Login
 
-Click “Login with EVE Online”
+Your web browser opens
 
-Your browser opens
+Log into EVE
 
-Log in & approve access
+Approve access
+
+You’ll see “Login successful”
 
 Close the browser tab
 
-The app updates with:
+📁 The program will now create:
 
-Wallet balance
+token.json
 
-Missions completed
 
-ISK earned from missions
+This file:
 
-❗ If the Program Opens Then Closes
+Stores your login token
 
-This means:
+Automatically refreshes
 
-Python is not installed correctly
+Prevents future logins
 
-pip is missing
-
-requests is not installed
-
-or CLIENT_ID / SECRET were not set
-
-👉 Always run from Command Prompt, not by double-clicking.
-
-✅ Quick Troubleshooting Checklist
-
-✔ Python installed
-✔ “Add Python to PATH” checked
-✔ pip install requests ran successfully
-✔ CLIENT_ID and CLIENT_SECRET filled in
-✔ Program run using python Mission.py
-
-👉 Always run from Command Prompt, not by double-clicking.
+➡️ You will NOT need to log in again
 
 
   
