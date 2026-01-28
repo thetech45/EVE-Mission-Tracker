@@ -1,5 +1,5 @@
 {
-  "client_id": "2458c3ef3a084c69b521236a6ac55bf4",
-  "callback_url": "http://localhost:8080/callback",
-  "scopes": "esi-wallet.read_character_wallet.v1"
+  "client_id": "YOUR_CLIENT_ID_HERE",
+  "callback_url": "http://localhost:8080/",
+  "scopes": "esi-wallet.read_character_wallet.v1 esi-characters.read_loyalty.v1"
 }
